@@ -90,3 +90,6 @@ target/
 
 # venv
 /venv/
+
+# logs
+/logs/
