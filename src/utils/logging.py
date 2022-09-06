@@ -4,7 +4,7 @@ import colorlog
 
 
 def configure_logging(
-    log_file: Optional[Union[str, "Path"]] = None,
+    log_file: Optional[Union[str, "Path"]] = None,  # noqa
     debug: bool = False,
     logger: Optional["logging.Logger"] = None,
 ) -> None:
