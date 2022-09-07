@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
-from datetime import datetime
 import logging
 from constants import PROJECT_DIR
+from src.utils.decorators import log_time
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ class Housingdata:
         df = pd.read_csv(PROJECT_DIR / "data/raw/home_insurance.csv", header=0)
         return df
 
+    @log_time
     def _clean(self, df: "pd.DataFrame") -> "pd.DataFrame":
         """Prepare the input data for training
 
@@ -23,10 +24,9 @@ class Housingdata:
 
         # TODO
         Methodology:
-            1. Handling missing values
+            1.
             2.
             3.
-            ...
 
         Returns:
             Clean dataset
@@ -80,14 +80,6 @@ class Housingdata:
         for col in categorical_cols:
             dummies = pd.get_dummies(df[col], drop_first=True, prefix=col)
             df = pd.concat([df, dummies], 1)
-
-        # 4. Create age features
-        df["age"] = (
-            datetime.strptime("2013-01-01", "%Y-%m-%d")
-            - pd.to_datetime(df["P1_DOB"])  # noqa
-        ).dt.days // 365
-        df["property_age"] = 2013 - df["YEARBUILT"]
-        df["cover_length"] = 2013 - pd.to_datetime(df["COVER_START"]).dt.year
 
         # 5. Impute missing value
         df["RISK_RATED_AREA_B_imputed"] = df["RISK_RATED_AREA_B"].fillna(
