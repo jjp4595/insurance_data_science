@@ -23,23 +23,19 @@ class Housingdata:
             df (pd.DataFrame): raw data
 
         # TODO
-        Methodology:
-            1.
-            2.
-            3.
 
         Returns:
             Clean dataset
         """
 
-        # 1. Missing values
+        # Missing values
         df = df[df["POL_STATUS"].notnull()]
 
-        # 2. Clean target variable
+        # Clean target variable
         df = df[df["POL_STATUS"] != "Unknown"]
         df["lapse"] = np.where(df["POL_STATUS"] == "Lapsed", 1, 0)
 
-        # 3. Create dummy variables for categorical variables
+        # Create dummy variables for categorical variables (one hot encode)
         categorical_cols = [
             "CLAIM3YEARS",
             "BUS_USE",
@@ -81,7 +77,7 @@ class Housingdata:
             dummies = pd.get_dummies(df[col], drop_first=True, prefix=col)
             df = pd.concat([df, dummies], 1)
 
-        # 5. Impute missing value
+        # Impute missing value
         df["RISK_RATED_AREA_B_imputed"] = df["RISK_RATED_AREA_B"].fillna(
             df["RISK_RATED_AREA_B"].mean()
         )
